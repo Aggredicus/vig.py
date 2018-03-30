@@ -86,10 +86,17 @@ def vig_full_encrypt(key_string, message_string):
         k = 0
         l = 0
         while k < whole_keys:
-            extended_key_arr.append(key_arr)
+            m = 0
+            while m < len(key_arr):
+                extended_key_arr.append(key_arr[m])
+                m += 1
+            print extended_key_arr
             k += 1
         while l < partial_key_letters:
+#            n = 0
+#            while n < len(key_arr):  
             extended_key_arr.append(key_arr[l])
+            print extended_key_arr
             l += 1
         key_arr = extended_key_arr  # Replaces key_arr with extended_key_arr
     coded_arr = []
