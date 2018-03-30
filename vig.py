@@ -7,6 +7,7 @@
 
 from tkinter import *
 from tkinter import ttk
+from random import randint
 
 # Caeser Cipher
 
@@ -116,7 +117,7 @@ def vig_full_encrypt(key_string, message_string):
     coded_string = ''.join(coded_arr)
     return coded_string
 
-# The same as vig_full_decrypt(), except that it performs the Caser shift in the other direction
+# The same as vig_full_encrypt(), except that it performs the Caser shift in the other direction
 def vig_full_decrypt(key_string, message_string):
     key_arr = list(key_string)
     full_arr = list(message_string)
@@ -158,6 +159,17 @@ def vig_full_decrypt(key_string, message_string):
         j += 1
     coded_string = ''.join(coded_arr)
     return coded_string
+
+# Generates a key of random letters based on an integer key length argument
+# REQUIRES: random.randint
+def random_key(key_length):
+    random_key_arr = []
+    while key_length > 0:
+        random_key_arr.append(num_decrypt(randint(1, 26)))
+        key_length -= 1
+    random_key_string = ''.join(random_key_arr)
+    return random_key_string
+    
 
 # Tkinter GUI
 
