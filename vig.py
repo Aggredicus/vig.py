@@ -89,7 +89,7 @@ def vig_full_encrypt(key_string, message_string):
 test_result = vig_full_encrypt('abcd', 'abcd')
 print(test_result)
 
-"""
+
 # Tkinter GUI
 
 def czr_gui_encrypt(*args):
@@ -143,4 +143,3 @@ shift_entry.focus()
 root.bind('<Return>', czr_gui_encrypt)
 
 root.mainloop()
-"""
