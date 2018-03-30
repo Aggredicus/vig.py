@@ -74,6 +74,22 @@ def czr_full_encrypt(shift_value, full_string):
     final_string = ''.join(encrypted_arr)
     return final_string
 
+# Takes in a key string and a message string to encrypt a message using a Vigenere cipher
+def vig_full_encrypt(key_string, message_string):
+    key_arr = list(key_string)
+    full_arr = list(message_string)
+    coded_arr = []
+    j = 0
+    while j < len(full_arr):
+        coded_arr.append(czr_encrypt(num_encrypt(key_arr[j]), full_arr[j])) 
+        j += 1
+    coded_string = ''.join(coded_arr)
+    return coded_string
+
+test_result = vig_full_encrypt('abcd', 'abcd')
+print(test_result)
+
+"""
 # Tkinter GUI
 
 def czr_gui_encrypt(*args):
@@ -127,4 +143,4 @@ shift_entry.focus()
 root.bind('<Return>', czr_gui_encrypt)
 
 root.mainloop()
-
+"""
