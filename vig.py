@@ -78,17 +78,27 @@ def czr_full_encrypt(shift_value, full_string):
 def vig_full_encrypt(key_string, message_string):
     key_arr = list(key_string)
     full_arr = list(message_string)
+    # If key is shorter than message, repeats the key to match the length of the message
+    if (len(key_arr) < len(full_arr)):
+        extended_key_arr = []
+        whole_keys = len(full_arr) / len(key_arr)
+        partial_key_letters = len(full_arr) % len(key_arr)
+        k = 0
+        l = 0
+        while k < whole_keys:
+            extended_key_arr.append(key_arr)
+            k += 1
+        while l < partial_key_letters:
+            extended_key_arr.append(key_arr[l])
+            l += 1
+        key_arr = extended_key_arr  # Replaces key_arr with extended_key_arr
     coded_arr = []
     j = 0
     while j < len(full_arr):
-        coded_arr.append(czr_encrypt(num_encrypt(key_arr[j]), full_arr[j])) 
+        coded_arr.append(czr_encrypt(num_encrypt(str(key_arr[j])), str(full_arr[j]))) 
         j += 1
     coded_string = ''.join(coded_arr)
     return coded_string
-
-test_result = vig_full_encrypt('abcd', 'abcd')
-print(test_result)
-
 
 # Tkinter GUI
 
