@@ -187,7 +187,7 @@ def vig_gui_encrypt(*args):
         input_string = str(message.get())
         input_key = str(key.get())
         message_encrypted.set(vig_full_encrypt(input_key, input_string))
-    except: ValueError:
+    except ValueError:
         pass
 
 def vig_gui_decrypt(*args):
@@ -195,13 +195,13 @@ def vig_gui_decrypt(*args):
         input_string = str(message.get())
         input_key = str(key.get())
         message_encrypted.set(vig_full_decrypt(input_key, input_string))
-    except: ValueError:
+    except ValueError:
         pass
 
 
 # Copies message_encrypted to the clipboard to be pasted
 # NOTE: You cannot paste the message from the clipboard after the window is closed on test OS
-def copy_to_clipboard(*args):x
+def copy_to_clipboard(*args):
     try:
         input_message_encrypted = str(message_encrypted.get())
         root.clipboard_clear()
@@ -227,7 +227,7 @@ shift_entry.grid(column=2, row=1, sticky=(W))
 message_entry = ttk.Entry(mainframe, width=7, textvariable=message)
 message_entry.grid(column=2, row=2, sticky=(W, E))
 
-ttk.Label(mainframe, textvariable=message_encrypted).grid(column=2, row=3, sticky=(W, E))
+ttk.Entry(mainframe, textvariable=message_encrypted).grid(column=2, row=3, sticky=(W, E))
 ttk.Button(mainframe, text="Encrypt", command=czr_gui_encrypt).grid(column=3, row=2, sticky=W)
 
 ttk.Button(mainframe, text="Copy to Clipboard", command=copy_to_clipboard).grid(column=3, row=3, sticky=W)
