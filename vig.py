@@ -162,7 +162,7 @@ def vig_full_decrypt(key_string, message_string):
 
 # Generates a key of random letters based on an integer key length argument
 # REQUIRES: random.randint
-def random_key(key_length):
+def random_key_generate(key_length):
     random_key_arr = []
     while key_length > 0:
         random_key_arr.append(num_decrypt(randint(1, 26)))
@@ -173,6 +173,12 @@ def random_key(key_length):
 # Note: It might be useful to translate the key 
 
 # Tkinter GUI
+def random_key_gui_generate(*args):
+    try:
+        input_key_length = int(key_length.get())
+        random_key.set(random_key_generate(input_key_length))
+    except ValueError:
+        pass
 
 def czr_gui_encrypt(*args):
     try:
@@ -201,6 +207,15 @@ def vig_gui_decrypt(*args):
 
 # Copies message_encrypted to the clipboard to be pasted
 # NOTE: You cannot paste the message from the clipboard after the window is closed on test OS
+def key_copy_to_clipboard(*args):
+    try:
+        input_random_key = str(random_key.get())
+        root.clipboard_clear()
+        root.clipboard_append(input_random_key)
+        root.update()
+    except ValueError:
+        pass
+
 def copy_to_clipboard(*args):
     try:
         input_message_encrypted = str(message_encrypted.get())
@@ -218,6 +233,7 @@ def vig_copy_to_clipboard(*args):
         root.update()
     except ValueError:
         pass
+
     
 root = Tk()
 root.title("Caeser Shift and Vigenere Cipher Tool")
@@ -228,6 +244,8 @@ mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
 # StringVar declaration
+key_length = StringVar()
+random_key = StringVar()
 shift = StringVar()
 message = StringVar()
 message_encrypted = StringVar()
@@ -235,32 +253,41 @@ vig_key = StringVar()
 vig_message = StringVar()
 vig_message_encrypted = StringVar()
 
+key_length_entry = ttk.Entry(mainframe, width=3, textvariable=key_length)
+key_length_entry.grid(column=2, row=1, sticky=(W))
+random_key_entry = ttk.Entry(mainframe, width=7, textvariable=random_key)
+random_key_entry.grid(column=2, row=2, sticky=(W, E))
 shift_entry = ttk.Entry(mainframe, width=3, textvariable=shift)
-shift_entry.grid(column=2, row=1, sticky=(W))
+shift_entry.grid(column=2, row=3, sticky=(W))
 message_entry = ttk.Entry(mainframe, width=7, textvariable=message)
-message_entry.grid(column=2, row=2, sticky=(W, E))
+message_entry.grid(column=2, row=4, sticky=(W, E))
 vig_key_entry = ttk.Entry(mainframe, width=7, textvariable=vig_key)
-vig_key_entry.grid(column=2, row=4, sticky=(W, E))
+vig_key_entry.grid(column=2, row=6, sticky=(W, E))
 vig_message_entry = ttk.Entry(mainframe, width=7, textvariable=vig_message)
-vig_message_entry.grid(column=2, row=5, sticky=(W, E))
+vig_message_entry.grid(column=2, row=7, sticky=(W, E))
 
-ttk.Entry(mainframe, textvariable=message_encrypted).grid(column=2, row=3, sticky=(W, E))
-ttk.Button(mainframe, text="Encrypt", command=czr_gui_encrypt).grid(column=3, row=2, sticky=W)
+ttk.Entry(mainframe, textvariable=random_key).grid(column=2, row=2, sticky=(W, E))
+ttk.Button(mainframe, text="Generate", command=random_key_gui_generate).grid(column=3, row=1, sticky=W)
 
-ttk.Entry(mainframe, textvariable=vig_message_encrypted).grid(column=2, row=6, sticky=(W, E))
-ttk.Button(mainframe, text="Encrypt", command=vig_gui_encrypt).grid(column=3, row=5, sticky=(W, E))
-ttk.Button(mainframe, text="Decrypt", command=vig_gui_decrypt).grid(column=4, row=5, sticky=W)
+ttk.Entry(mainframe, textvariable=message_encrypted).grid(column=2, row=5, sticky=(W, E))
+ttk.Button(mainframe, text="Encrypt", command=czr_gui_encrypt).grid(column=3, row=4, sticky=W)
 
-ttk.Button(mainframe, text="Copy to Clipboard", command=copy_to_clipboard).grid(column=3, row=3, sticky=W)
-ttk.Button(mainframe, text="Copy to Clipboard", command=vig_copy_to_clipboard).grid(column=3, row=6, sticky=W)
+ttk.Entry(mainframe, textvariable=vig_message_encrypted).grid(column=2, row=8, sticky=(W, E))
+ttk.Button(mainframe, text="Encrypt", command=vig_gui_encrypt).grid(column=3, row=7, sticky=(W, E))
+ttk.Button(mainframe, text="Decrypt", command=vig_gui_decrypt).grid(column=4, row=7, sticky=W)
 
+ttk.Button(mainframe, text="Copy to Clipboard", command=key_copy_to_clipboard).grid(column=3, row=2, sticky=W)
+ttk.Button(mainframe, text="Copy to Clipboard", command=copy_to_clipboard).grid(column=3, row=5, sticky=W)
+ttk.Button(mainframe, text="Copy to Clipboard", command=vig_copy_to_clipboard).grid(column=3, row=8, sticky=W)
 
-ttk.Label(mainframe, text='Shift Value:').grid(column=1, row=1, sticky=E)
-ttk.Label(mainframe, text="Message (Caeser):").grid(column=1, row=2, sticky=E)
-ttk.Label(mainframe, text="Resulting Message:").grid(column=1, row=3, sticky=E)
-ttk.Label(mainframe, text="Vigenere Key:").grid(column=1, row=4, sticky=E)
-ttk.Label(mainframe, text="Message (Vigenere):").grid(column=1, row=5, sticky=E)
-ttk.Label(mainframe, text="Resulting Message:").grid(column=1, row=6, sticky=E)
+ttk.Label(mainframe, text="Desired Key Length:").grid(column=1, row=1, sticky=E)
+ttk.Label(mainframe, text="Random Key:").grid(column=1, row=2, sticky=E)
+ttk.Label(mainframe, text='Shift Value:').grid(column=1, row=3, sticky=E)
+ttk.Label(mainframe, text="Message (Caeser):").grid(column=1, row=4, sticky=E)
+ttk.Label(mainframe, text="Resulting Message:").grid(column=1, row=5, sticky=E)
+ttk.Label(mainframe, text="Vigenere Key:").grid(column=1, row=6, sticky=E)
+ttk.Label(mainframe, text="Message (Vigenere):").grid(column=1, row=7, sticky=E)
+ttk.Label(mainframe, text="Resulting Message:").grid(column=1, row=8, sticky=E)
 
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
