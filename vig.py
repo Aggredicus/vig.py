@@ -170,6 +170,7 @@ def random_key(key_length):
     random_key_string = ''.join(random_key_arr)
     return random_key_string
     
+# Note: It might be useful to translate the key 
 
 # Tkinter GUI
 
@@ -181,9 +182,26 @@ def czr_gui_encrypt(*args):
     except ValueError:
         pass
 
+def vig_gui_encrypt(*args):
+    try:
+        input_string = str(message.get())
+        input_key = str(key.get())
+        message_encrypted.set(vig_full_encrypt(input_key, input_string))
+    except: ValueError:
+        pass
+
+def vig_gui_decrypt(*args):
+    try:
+        input_string = str(message.get())
+        input_key = str(key.get())
+        message_encrypted.set(vig_full_decrypt(input_key, input_string))
+    except: ValueError:
+        pass
+
+
 # Copies message_encrypted to the clipboard to be pasted
 # NOTE: You cannot paste the message from the clipboard after the window is closed on test OS
-def copy_to_clipboard(*args):
+def copy_to_clipboard(*args):x
     try:
         input_message_encrypted = str(message_encrypted.get())
         root.clipboard_clear()
