@@ -184,17 +184,17 @@ def czr_gui_encrypt(*args):
 
 def vig_gui_encrypt(*args):
     try:
-        input_string = str(message.get())
-        input_key = str(key.get())
-        message_encrypted.set(vig_full_encrypt(input_key, input_string))
+        input_string = str(vig_message.get())
+        input_key = str(vig_key.get())
+        vig_message_encrypted.set(vig_full_encrypt(input_key, input_string))
     except ValueError:
         pass
 
 def vig_gui_decrypt(*args):
     try:
-        input_string = str(message.get())
-        input_key = str(key.get())
-        message_encrypted.set(vig_full_decrypt(input_key, input_string))
+        input_string = str(vig_message.get())
+        input_key = str(vig_key.get())
+        vig_message_encrypted.set(vig_full_decrypt(input_key, input_string))
     except ValueError:
         pass
 
@@ -209,32 +209,59 @@ def copy_to_clipboard(*args):
         root.update()
     except ValueError:
         pass
+# The same as copy_to_clipboard(), but for the Vigenere cipher results
+def vig_copy_to_clipboard(*args):
+    try:
+        input_message_encrypted = str(vig_message_encrypted.get())
+        root.clipboard_clear()
+        root.clipboard_append(input_message_encrypted)
+        root.update()
+    except ValueError:
+        pass
     
 root = Tk()
-root.title("Caeser Shift Tool")
+root.title("Caeser Shift and Vigenere Cipher Tool")
 
 mainframe = ttk.Frame(root, padding="3 3 12 12")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
 mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
+# StringVar declaration
 shift = StringVar()
 message = StringVar()
 message_encrypted = StringVar()
+vig_key = StringVar()
+vig_message = StringVar()
+vig_message_encrypted = StringVar()
 
 shift_entry = ttk.Entry(mainframe, width=3, textvariable=shift)
 shift_entry.grid(column=2, row=1, sticky=(W))
 message_entry = ttk.Entry(mainframe, width=7, textvariable=message)
 message_entry.grid(column=2, row=2, sticky=(W, E))
+vig_key_entry = ttk.Entry(mainframe, width=7, textvariable=vig_key)
+vig_key_entry.grid(column=2, row=4, sticky=(W, E))
+vig_message_entry = ttk.Entry(mainframe, width=7, textvariable=vig_message)
+vig_message_entry.grid(column=2, row=5, sticky=(W, E))
 
 ttk.Entry(mainframe, textvariable=message_encrypted).grid(column=2, row=3, sticky=(W, E))
 ttk.Button(mainframe, text="Encrypt", command=czr_gui_encrypt).grid(column=3, row=2, sticky=W)
 
+ttk.Entry(mainframe, textvariable=vig_message_encrypted).grid(column=2, row=6, sticky=(W, E))
+ttk.Button(mainframe, text="Encrypt", command=vig_gui_encrypt).grid(column=3, row=5, sticky=(W, E))
+ttk.Button(mainframe, text="Decrypt", command=vig_gui_decrypt).grid(column=4, row=5, sticky=W)
+
 ttk.Button(mainframe, text="Copy to Clipboard", command=copy_to_clipboard).grid(column=3, row=3, sticky=W)
+ttk.Button(mainframe, text="Copy to Clipboard", command=vig_copy_to_clipboard).grid(column=3, row=6, sticky=W)
+
 
 ttk.Label(mainframe, text='Shift Value:').grid(column=1, row=1, sticky=E)
-ttk.Label(mainframe, text="Message:").grid(column=1, row=2, sticky=E)
-ttk.Label(mainframe, text="Encrypted message:").grid(column=1, row=3, sticky=E)
+ttk.Label(mainframe, text="Message (Caeser):").grid(column=1, row=2, sticky=E)
+ttk.Label(mainframe, text="Resulting Message:").grid(column=1, row=3, sticky=E)
+ttk.Label(mainframe, text="Vigenere Key:").grid(column=1, row=4, sticky=E)
+ttk.Label(mainframe, text="Message (Vigenere):").grid(column=1, row=5, sticky=E)
+ttk.Label(mainframe, text="Resulting Message:").grid(column=1, row=6, sticky=E)
+
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
 
