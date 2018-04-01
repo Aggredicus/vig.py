@@ -295,7 +295,7 @@ ttk.Label(mainframe, text="Resulting Message:").grid(column=1, row=8, sticky=E)
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
 
-shift_entry.focus()
+key_length_entry.focus()
 root.bind('<Return>', czr_gui_encrypt)
 
 root.mainloop()
