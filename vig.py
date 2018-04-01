@@ -19,7 +19,7 @@ def num_encrypt(arg):
         return int(letter_code)
     else:
         return str(arg)
-    
+
 # Converts an integer representation of a letter into a string containing a letter
 def num_decrypt(arg):
     # Checks to see if arg is a non-integer
@@ -38,7 +38,10 @@ def czr_encrypt(shift_value, letter):
         return letter
     else:
         letter_to_num = num_encrypt(str(letter))
-        shifted_num = letter_to_num + shift_value
+        if (shift_value > 0):
+            shifted_num = letter_to_num + (shift_value % 26)
+        else:
+            shifted_num = letter_to_num + (26 - (abs(shift_value) % 26))
         # Handles cipher shifts past z
         if (shifted_num > 26):
             shifted_num -= 26
@@ -79,7 +82,7 @@ def czr_full_encrypt(shift_value, full_string):
 def vig_full_encrypt(key_string, message_string):
     key_arr = list(key_string)
     full_arr = list(message_string)
-    
+
     # If key is shorter than message, repeats the key to match the length of the message
     if (len(key_arr) < len(full_arr)):
         extended_key_arr = []
@@ -87,32 +90,32 @@ def vig_full_encrypt(key_string, message_string):
         partial_key_letters = len(full_arr) % len(key_arr)
         k = 0
         l = 0
-        
+
         # Repeats the key string <whole_keys> number of times
         while k < whole_keys:
-            
+
             # Appends the letters of the key string, one at a time
             m = 0
             while m < len(key_arr):
                 extended_key_arr.append(key_arr[m])
                 m += 1
             k += 1
-        
+
         # Appends the letters of the key string, one at a time, as many times as it takes
         # to match the key string length to the message string length
         while l < partial_key_letters:
             extended_key_arr.append(key_arr[l])
             l += 1
-        
+
         # Replaces key_arr with extended_key_arr
         key_arr = extended_key_arr
-    
+
     # Performs the Vigenere cipher by Caeser shifting each letter in the message string according
     # to the integer value of letter correspondingly positioned in the key string
     coded_arr = []
     j = 0
     while j < len(full_arr):
-        coded_arr.append(czr_encrypt(num_encrypt(str(key_arr[j])), str(full_arr[j]))) 
+        coded_arr.append(czr_encrypt(num_encrypt(str(key_arr[j])), str(full_arr[j])))
         j += 1
     coded_string = ''.join(coded_arr)
     return coded_string
@@ -121,7 +124,7 @@ def vig_full_encrypt(key_string, message_string):
 def vig_full_decrypt(key_string, message_string):
     key_arr = list(key_string)
     full_arr = list(message_string)
-    
+
     # If key is shorter than message, repeats the key to match the length of the message
     if (len(key_arr) < len(full_arr)):
         extended_key_arr = []
@@ -129,33 +132,33 @@ def vig_full_decrypt(key_string, message_string):
         partial_key_letters = len(full_arr) % len(key_arr)
         k = 0
         l = 0
-        
+
         # Repeats the key string <whole_keys> number of times
         while k < whole_keys:
-            
+
             # Appends the letters of the key string, one at a time
             m = 0
             while m < len(key_arr):
                 extended_key_arr.append(key_arr[m])
                 m += 1
             k += 1
-        
+
         # Appends the letters of the key string, one at a time, as many times as it takes
         # to match the key string length to the message string length
         while l < partial_key_letters:
             extended_key_arr.append(key_arr[l])
             l += 1
-        
+
         # Replaces key_arr with extended_key_arr
         key_arr = extended_key_arr
-    
+
     # Performs the Vigenere cipher by Caeser shifting each letter in the message string according
     # to the integer value of letter correspondingly positioned in the key string
     coded_arr = []
     j = 0
     while j < len(full_arr):
         # Here, I have negated the num_encrypt() result to decrypt instead of encrypt
-        coded_arr.append(czr_encrypt(-num_encrypt(str(key_arr[j])), str(full_arr[j]))) 
+        coded_arr.append(czr_encrypt(-num_encrypt(str(key_arr[j])), str(full_arr[j])))
         j += 1
     coded_string = ''.join(coded_arr)
     return coded_string
@@ -169,8 +172,8 @@ def random_key_generate(key_length):
         key_length -= 1
     random_key_string = ''.join(random_key_arr)
     return random_key_string
-    
-# Note: It might be useful to translate the key 
+
+# Note: It might be useful to translate the key
 
 # Tkinter GUI
 def random_key_gui_generate(*args):
@@ -234,7 +237,7 @@ def vig_copy_to_clipboard(*args):
     except ValueError:
         pass
 
-    
+
 root = Tk()
 root.title("Caeser Shift and Vigenere Cipher Tool")
 
