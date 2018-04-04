@@ -34,9 +34,13 @@ def num_decrypt(arg):
 
 # Shifts a letter <shift_value> places to the right for each letter
 def czr_encrypt(shift_value, letter):
-    letter = letter.replace('\n', '  ').replace('\r', '  ')
+#    letter = letter.replace('\n', '  ').replace('\r', '  ')
     # Converts each newline return (ENTER) in messages to spaces    
     if (letter.isalpha() == False):
+        return letter
+    elif (letter == '\n'):
+        return letter
+    elif (letter == '\r'):
         return letter
     else:
         letter_to_num = num_encrypt(str(letter))
